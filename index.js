@@ -18,12 +18,16 @@ const credentials = new Credentials({
 })
 
 app.get('/', (req, res) => {
+  //Create a new disclosure request, requesting the push notification token and a new key
   credentials.createDisclosureRequest({
     notifications: true,
+    accountType: 'keypair',
     vc: ['/ipfs/QmWE2pDhzcaa6jN1YQCgisBtBqF5uUCeQrfVAvGqoX4BEx'],
     callbackUrl: endpoint + '/callback'
   }).then(disclosureRequestJWT => {
     console.log(decodeJWT(disclosureRequestJWT))  //log request token to console
+    
+    //Create QR code with the disclosure request.
     const uri = message.paramsToQueryString(message.messageToURI(disclosureRequestJWT), {callback_type: 'post'})
     const qr =  transports.ui.getImageDataURI(uri)
     res.send(`<div><img src="${qr}"/></div>`)
