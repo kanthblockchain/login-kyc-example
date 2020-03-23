@@ -69,5 +69,5 @@ const server = app.listen(8088, () => {
   ngrok.connect(8088).then(ngrokUrl => {
     endpoint = ngrokUrl
     console.log(`Login Service running, open at ${endpoint}`)
-  })
+  }).catch(error => console.error(error))
 })
